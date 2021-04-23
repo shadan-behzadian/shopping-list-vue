@@ -6,6 +6,7 @@ const cors = require("cors");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const BucketListItemRoutes = require("./routes/api/buckeListItems");
+const path = require("path");
 
 app.use(cors());
 app.use(morgan("tiny"));
@@ -22,7 +23,14 @@ mongoose
   .catch((err) => console.log(err, mongoUri));
 
 app.use("/api/bucketListItems", BucketListItemRoutes);
-app.get("/", (req, res) => res.send("Hello world"));
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("client/dist"));
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "client", "dist", "index.html"));
+  });
+}
+
 app.listen(PORT, () =>
   console.log(`app lalala listenting at http/localhost/${PORT}`)
 );

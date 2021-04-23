@@ -71,28 +71,21 @@ export default {
   },
   async mounted() {
     console.log("hi");
-    const response = await axios.get(
-      "http://localhost:3000/api/bucketListItems/"
-    );
+    const response = await axios.get("api/bucketListItems/");
     this.items = response.data;
     console.log(response);
   },
   methods: {
     async addItem() {
-      const response = await axios.post(
-        "http://localhost:3000/api/bucketListItems/",
-        {
-          description: this.description,
-        }
-      );
+      const response = await axios.post("api/bucketListItems/", {
+        description: this.description,
+      });
       this.items.push(response.data);
       console.log(response);
       this.description = "";
     },
     async removeItem(item, i) {
-      await axios.delete(
-        "http://localhost:3000/api/bucketListItems/" + item._id
-      );
+      await axios.delete("api/bucketListItems/" + item._id);
       this.items.splice(i, 1);
     },
     select(item) {
@@ -107,12 +100,9 @@ export default {
       this.editedDescription = "";
     },
     async updateItem(item, i) {
-      const response = await axios.put(
-        "http://localhost:3000/api/bucketListItems/" + item._id,
-        {
-          description: this.editedDescription,
-        }
-      );
+      const response = await axios.put("api/bucketListItems/" + item._id, {
+        description: this.editedDescription,
+      });
       this.items[i] = response.data;
       this.unselect();
     },
